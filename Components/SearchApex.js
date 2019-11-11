@@ -1,7 +1,23 @@
 // Components/Search.js
 
 import React from 'react';
-import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	TextInput,
+	Picker,
+	Text,
+	FlatList,
+	ActivityIndicator,
+	ScrollView,
+	Modal,
+	TouchableHighlight,
+	Image,
+	Button,
+	TouchableOpacity,
+} from 'react-native';
+// import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfilApex from './ProfilApex';
 import { getFilmsFromApiWithSearchedText, getApexData } from '../API/TMDBApi';
 import { connect } from 'react-redux';
@@ -11,20 +27,57 @@ class Search extends React.Component {
 	constructor(props) {
 		super(props);
 		this.searchedText = '';
-		this.platform = 'psn';
+		// this.platform = 'psn';
 		this.state = {
+			platform: 'psn',
 			films: [],
 			profile: [],
 			isLoading: false,
 			bool: false,
+			modalVisible: false,
 		};
 	}
+
+	static navigationOptions = ({ navigation }) => {
+		// const { params } = navigation;
+		// On accède à la fonction shareFilm et au film via les paramètres qu'on a ajouté à la navigation
+		return {
+			// On a besoin d'afficher une image, il faut donc passe par une Touchable une fois de plus
+			headerRight: (
+				<TouchableOpacity
+					style={styles.share_touchable_headerrightbutton}
+					onPress={() => console.log('GO PROFILE')}>
+					<Image style={styles.share_image} source={require('../Images/ic-profile.png')} />
+				</TouchableOpacity>
+			),
+			headerLeft: (
+				<TouchableOpacity
+					style={styles.share_touchable_headerrightbutton}
+					onPress={() => {
+						const toto = navigation.getParam('getSearchModal');
+						toto(true);
+						// params.setModalVisible(true);
+					}}>
+					<Image style={styles.share_image} source={require('../Images/ic_search.png')} />
+				</TouchableOpacity>
+			),
+		};
+		// }
+	};
+
+	componentWillMount() {
+		// this.setModalVisible = this.setModalVisible.bind(this);
+		this.props.navigation.setParams({ getSearchModal: this._setModalVisible });
+	}
+
+	_setModalVisible = visible => {
+		this.setState({ modalVisible: visible });
+	};
 
 	async _loadFilms() {
 		if (this.searchedText.length > 0) {
 			this.setState({ isLoading: true });
-			let toto = await getApexData(this.searchedText, this.platform);
-			console.log('xsxsxsxs => ');
+			let toto = await getApexData(this.searchedText, this.state.platform);
 
 			this.setState({
 				// films: [...this.state.films, ...data.results],
@@ -35,6 +88,10 @@ class Search extends React.Component {
 			// });
 		}
 	}
+
+	_updatePlatform = platform => {
+		this.setState({ platform: platform });
+	};
 
 	_searchTextInputChanged(text) {
 		this.searchedText = text;
@@ -51,6 +108,7 @@ class Search extends React.Component {
 				this._loadFilms();
 			}
 		);
+		this._setModalVisible(!this.state.modalVisible);
 	}
 
 	// _displayDetailForFilm = idFilm => {
@@ -71,42 +129,48 @@ class Search extends React.Component {
 	render() {
 		console.log('render ');
 		// console.log(this.state);
-		const profile = this.state.profile;
+		// const profile = this.state.profile;
 		return (
 			<View style={styles.main_container}>
-				<TextInput
-					style={styles.textinput}
-					placeholder="pseudo"
-					onChangeText={text => this._searchTextInputChanged(text)}
-					onSubmitEditing={() => this._searchFilms()}
-				/>
-				<Button title="Rechercher" onPress={() => this._searchFilms()} />
-				{/* <FlatList data={this.state.profile} renderItem={({ item }) => <ProfilApex profile={item} />} /> */}
-				<ProfilApex profile={this.state.profile} bool={this.state.bool} />
-				{/* <FlatList
-					data={this.state.films}
-					extraData={this.props.favoritesFilm}
-					// On utilise la prop extraData pour indiquer à notre FlatList que d’autres données doivent être prises en compte si on lui demande de se re-rendre
-					keyExtractor={item => item.id.toString()}
-					renderItem={({ item }) => (
-						<FilmItem
-							film={item}
-							// Ajout d'une props isFilmFavorite pour indiquer à l'item d'afficher un 🖤 ou non
-							isFilmFavorite={
-								this.props.favoritesFilm.findIndex(film => film.id === item.id) !== -1 ? true : false
-							}
-							displayDetailForFilm={this._displayDetailForFilm}
-						/>
-					)}
-					onEndReachedThreshold={0.5}
-					onEndReached={() => {
-						if (this.page < this.totalPages) {
-							// On vérifie également qu'on n'a pas atteint la fin de la pagination (totalPages) avant de charger plus d'éléments
-							this._loadFilms();
-						}
-					}}
-				/> */}
-				{this._displayLoading()}
+				<ScrollView>
+					{this._displayLoading()}
+
+					<Modal
+						animationType="slide"
+						transparent={false}
+						visible={this.state.modalVisible}
+						onRequestClose={() => {
+							Alert.alert('Modal has been closed.');
+						}}>
+						<View style={{ marginTop: 22 }}>
+							<TextInput
+								style={styles.textinput}
+								placeholder="pseudo"
+								onChangeText={text => this._searchTextInputChanged(text)}
+								onSubmitEditing={() => this._searchFilms()}
+							/>
+							<Picker
+								selectedValue={this.state.platform}
+								onValueChange={this._updatePlatform}
+								// style={{ height: 10, width: 100 }}
+								itemStyle={{ backgroundColor: 'grey', fontSize: 17 }}>
+								<Picker.Item label="psn" value="psn" />
+								<Picker.Item label="xb1" value="xb1" />
+								<Picker.Item label="pc" value="pc" />
+							</Picker>
+							<Button title="Rechercher" onPress={() => this._searchFilms()} />
+
+							<TouchableHighlight
+								onPress={() => {
+									this._setModalVisible(!this.state.modalVisible);
+								}}>
+								<Text>Hide Modal</Text>
+							</TouchableHighlight>
+						</View>
+					</Modal>
+
+					<ProfilApex profile={this.state.profile} bool={this.state.bool} />
+				</ScrollView>
 			</View>
 		);
 	}
@@ -135,8 +199,13 @@ const styles = StyleSheet.create({
 	},
 	share_image: {
 		width: 30,
-		height: 30
-	}
+		height: 30,
+	},
+	icon: {
+		width: 100,
+		height: 100,
+		backgroundColor: 'grey',
+	},
 });
 
 // On connecte le store Redux, ainsi que les films favoris du state de notre application, à notre component Search

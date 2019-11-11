@@ -4,34 +4,54 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { getImageFromApi } from '../API/TMDBApi';
 import FadeIn from '../Animations/FadeIn';
-import { Platform } from '@unimodules/core';
+// import { Platform } from '@unimodules/core';
 import EnlargeShrink from '../Animations/EnlargeShrink';
+import Flag from 'react-native-flags';
 
 class ProfileApex extends React.Component {
 	render() {
 		const { profile, bool } = this.props;
 		let platform;
+		let platformSlug;
 		if (bool) {
-			console.log('prorpo => ', profile.platformInfo.avatarUrl);
-
-			switch (profile.platformInfo.platformSlug) {
+			console.log('platformSlug => ', profile.platformInfo.platformSlug);
+			console.log('countryCode => ', profile.segments[1].metadata.name);
+			platformSlug = profile.platformInfo.platformSlug;
+			switch (platformSlug) {
 				case 'psn':
-					platform = '../Images/playstation-brands.svg';
+					platform = require('../Images/ic-playstation.png');
+					break;
 				case 'xb1':
-					platform = '../Images/xbox-brands.svg';
+					platform = require('../Images/ic-xbox.png');
+					break;
 				case 'pc':
-					platform = '../Images/windows-brands.svg';
+					platform = require('../Images/ic-pc.png');
+					break;
 			}
 
 			return (
 				<FadeIn>
 					<TouchableOpacity style={styles.main_container}>
-						<Image style={styles.share_image} source={require('../Images/ic-playstation.png')} />
-						<Image style={styles.image} source={{ uri: profile.platformInfo.avatarUrl }} />
+						<View style={styles.avatar_and_flag}>
+							<Image style={styles.avatar_img} source={{ uri: profile.platformInfo.avatarUrl }} />
+							<Flag style={styles.country_flag} code={profile.userInfo.countryCode} size={24} />
+						</View>
 						<Text style={styles.title_text}> {profile.platformInfo.platformUserId}</Text>
-						<Text style={styles.title_text}> {profile.userInfo.countryCode}</Text>
+						<Image style={styles.platform_img} source={platform} />
+
+						{/* <Text style={styles.title_text}> {profile.segments[0].stats.level}</Text> */}
 						{/* <Text>{profile.platformInfo}</Text> */}
 					</TouchableOpacity>
+					<Text> Level: {profile.segments[0].stats.level.displayValue}</Text>
+					<Text> Kills: {profile.segments[0].stats.kills.displayValue}</Text>
+					<Image
+						style={styles.rank_image}
+						source={{ uri: profile.segments[0].stats.rankScore.metadata.iconUrl }}
+					/>
+					<Text> rank: #{profile.segments[0].stats.rankScore.rank}</Text>
+					<Text> Score: {profile.segments[0].stats.rankScore.displayValue}</Text>
+					<Text> Last Character Played: {profile.segments[1].metadata.name}</Text>
+					<Image style={styles.rank_image} source={{ uri: profile.segments[1].metadata.imageUrl }} />
 				</FadeIn>
 			);
 		} else {
@@ -42,54 +62,48 @@ class ProfileApex extends React.Component {
 
 const styles = StyleSheet.create({
 	main_container: {
-		height: 190,
+		// height: 190,
 		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
+		// borderWidth: 2,
 	},
-	image: {
-		width: 120,
-		height: 180,
-		margin: 5,
+	avatar_and_flag: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'flex-end',
+	},
+	country_flag: {
+		marginRight: 5,
+	},
+	avatar_img: {
+		width: 70,
+		height: 70,
+		// margin: 5,
+		borderWidth: 2,
+		borderRadius: 40,
+	},
+	rank_image: {
+		width: 70,
+		height: 70,
+		// margin: 5,
+		// borderWidth: 2,
+		// borderRadius: 40,
 	},
 	content_container: {
 		flex: 1,
 		margin: 5,
 	},
-	header_container: {
-		flex: 3,
-		flexDirection: 'row',
-	},
+
 	title_text: {
 		fontWeight: 'bold',
 		fontSize: 20,
-		flex: 1,
+		// flex: 1,
 		flexWrap: 'wrap',
-		paddingRight: 5,
+		// paddingRight: 5,
 	},
-	vote_text: {
-		fontWeight: 'bold',
-		fontSize: 26,
-		color: '#666666',
-	},
-	description_container: {
-		flex: 7,
-	},
-	description_text: {
-		fontStyle: 'italic',
-		color: '#666666',
-	},
-	date_container: {
-		flex: 1,
-	},
-	date_text: {
-		textAlign: 'right',
-		fontSize: 14,
-	},
-	favorite_image: {
-		width: 25,
-		height: 25,
-		marginRight: 5,
-	},
-	share_image: {
+
+	platform_img: {
 		width: 30,
 		height: 30,
 	},

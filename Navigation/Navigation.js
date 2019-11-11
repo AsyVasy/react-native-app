@@ -9,6 +9,7 @@ import Search from '../Components/Search';
 import FilmDetail from '../Components/FilmDetail';
 import Favorites from '../Components/Favorites';
 // import Test from '../Components/Test';
+import FicheTest from '../Components/FicheTest';
 import SearchApex from '../Components/SearchApex';
 
 const SearchStackNavigator = createStackNavigator({
@@ -30,6 +31,14 @@ const SearchApexStackNavigator = createStackNavigator({
 		},
 	},
 });
+const TestStackNavigator = createStackNavigator({
+	Apex: {
+		screen: FicheTest,
+		navigationOptions: {
+			title: 'Test',
+		},
+	},
+});
 
 const MoviesTabNavigator = createBottomTabNavigator(
 	{
@@ -47,6 +56,14 @@ const MoviesTabNavigator = createBottomTabNavigator(
 		// 	navigationOptions: {
 		// 		tabBarIcon: () => {
 		// 			return <Image source={require('../Images/ic_favorite.png')} style={styles.icon} />;
+		// 		},
+		// 	},
+		// },
+		// Test: {
+		// 	screen: TestStackNavigator,
+		// 	navigationOptions: {
+		// 		tabBarIcon: () => {
+		// 			return <Image source={require('../Images/ic-playstation.png')} style={styles.icon} />;
 		// 		},
 		// 	},
 		// },
