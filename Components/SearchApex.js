@@ -134,7 +134,7 @@ class Search extends React.Component {
 			<View style={styles.main_container}>
 				<ScrollView>
 					{this._displayLoading()}
-
+					<Text>Search for a profil </Text>
 					<Modal
 						animationType="slide"
 						transparent={false}
@@ -202,6 +202,11 @@ const styles = StyleSheet.create({
 		height: 30,
 	},
 	icon: {
+		width: 100,
+		height: 100,
+		backgroundColor: 'grey',
+	},
+	platform_img: {
 		width: 100,
 		height: 100,
 		backgroundColor: 'grey',

@@ -1,7 +1,7 @@
 // Components/ProfileApex.js
 
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, ImageBackground } from 'react-native';
 import { getImageFromApi } from '../API/TMDBApi';
 import FadeIn from '../Animations/FadeIn';
 import { Platform } from '@unimodules/core';
@@ -24,34 +24,9 @@ class ProfileApex extends React.Component {
 			}
 			console.log(platform);
 			return (
-				<FadeIn>
-					<TouchableOpacity style={styles.main_container}>
-						<View style={styles.avatar_and_flag}>
-							<Image
-								style={styles.avatar_img}
-								source={{ uri: 'https://avatar-cdn.tracker.gg/api/avatar/2/Asyvasy.png' }}
-							/>
-							<Flag style={styles.country_flag} code="FR" size={24} />
-						</View>
-						<Text style={styles.title_text}> AsyVasy</Text>
-						<Image style={styles.platform_img} source={platform} />
-
-						{/* <Text style={styles.title_text}> {profile.segments[0].stats.level}</Text> */}
-						{/* <Text>{profile.platformInfo}</Text> */}
-					</TouchableOpacity>
-					<Text> Level: 252</Text>
-					<Text> Kills: 786</Text>
-					<Image
-						style={styles.rank_image}
-						source={{ uri: 'https://trackercdn.com/cdn/apex.tracker.gg/ranks/apex.png' }}
-					/>
-					<Text> Score: 5074</Text>
-					<Text> Last Character Played: Pathfinder</Text>
-					<Image
-						style={styles.rank_image}
-						source={{ uri: 'https://trackercdn.com/cdn/apex.tracker.gg/legends/pathfinder-tile.png' }}
-					/>
-				</FadeIn>
+				<ImageBackground source={require('../Images/wp-apex1.png')} style={{ width: '100%', height: '100%' }}>
+					<Text>Inside</Text>
+				</ImageBackground>
 			);
 		} else {
 			return <Text style={styles.title_text}> </Text>;

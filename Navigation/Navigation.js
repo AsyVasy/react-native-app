@@ -27,7 +27,7 @@ const SearchApexStackNavigator = createStackNavigator({
 	Apex: {
 		screen: SearchApex,
 		navigationOptions: {
-			title: 'Apex',
+			title: 'Home',
 		},
 	},
 });
@@ -59,19 +59,19 @@ const MoviesTabNavigator = createBottomTabNavigator(
 		// 		},
 		// 	},
 		// },
-		// Test: {
-		// 	screen: TestStackNavigator,
-		// 	navigationOptions: {
-		// 		tabBarIcon: () => {
-		// 			return <Image source={require('../Images/ic-playstation.png')} style={styles.icon} />;
-		// 		},
-		// 	},
-		// },
+		Test: {
+			screen: TestStackNavigator,
+			navigationOptions: {
+				tabBarIcon: () => {
+					return <Image source={require('../Images/ic-playstation.png')} style={styles.icon} />;
+				},
+			},
+		},
 		Apex: {
 			screen: SearchApexStackNavigator,
 			navigationOptions: {
 				tabBarIcon: () => {
-					return <Image source={require('../Images/ic_favorite.png')} style={styles.icon} />;
+					return <Image source={require('../Images/ic-apex-legends.png')} style={styles.icon} />;
 				},
 			},
 		},
@@ -88,8 +88,8 @@ const MoviesTabNavigator = createBottomTabNavigator(
 
 const styles = StyleSheet.create({
 	icon: {
-		width: 30,
-		height: 30,
+		width: 55,
+		height: 55,
 	},
 });
 
