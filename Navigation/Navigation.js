@@ -13,17 +13,17 @@ import FicheTest from '../Components/FicheTest';
 import SearchApex from '../Components/SearchApex';
 import ProfilApex from '../Components/ProfilApex';
 
-const SearchStackNavigator = createStackNavigator({
-	Search: {
-		screen: Search,
-		navigationOptions: {
-			title: 'Rechercher',
-		},
-	},
-	FilmDetail: {
-		screen: FilmDetail,
-	},
-});
+// const SearchStackNavigator = createStackNavigator({
+// 	Search: {
+// 		screen: Search,
+// 		navigationOptions: {
+// 			title: 'Rechercher',
+// 		},
+// 	},
+// 	FilmDetail: {
+// 		screen: FilmDetail,
+// 	},
+// });
 
 const SearchApexStackNavigator = createStackNavigator({
 	Home: {
@@ -48,23 +48,23 @@ const TestStackNavigator = createStackNavigator({
 
 const MoviesTabNavigator = createBottomTabNavigator(
 	{
-		Search: {
-			screen: SearchStackNavigator,
-			navigationOptions: {
-				tabBarIcon: () => {
-					// On définit le rendu de nos icônes par les images récemment ajoutés au projet
-					return <Image source={require('../Images/ic_search.png')} style={styles.icon} />; // On applique un style pour les redimensionner comme il faut
-				},
-			},
-		},
-		Favorites: {
-			screen: Favorites,
-			navigationOptions: {
-				tabBarIcon: () => {
-					return <Image source={require('../Images/ic_favorite.png')} style={styles.icon} />;
-				},
-			},
-		},
+		// Search: {
+		// 	screen: SearchStackNavigator,
+		// 	navigationOptions: {
+		// 		tabBarIcon: () => {
+		// 			// On définit le rendu de nos icônes par les images récemment ajoutés au projet
+		// 			return <Image source={require('../Images/ic_search.png')} style={styles.icon} />; // On applique un style pour les redimensionner comme il faut
+		// 		},
+		// 	},
+		// },
+		// Favorites: {
+		// 	screen: Favorites,
+		// 	navigationOptions: {
+		// 		tabBarIcon: () => {
+		// 			return <Image source={require('../Images/ic_favorite.png')} style={styles.icon} />;
+		// 		},
+		// 	},
+		// },
 
 		Apex: {
 			screen: SearchApexStackNavigator,

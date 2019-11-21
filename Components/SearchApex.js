@@ -64,7 +64,7 @@ class Search extends React.Component {
 		// }
 	};
 
-	componentWillMount() {
+	componentWillMount () {
 		// this.setModalVisible = this.setModalVisible.bind(this);
 		this.props.navigation.setParams({ getSearchModal: this._setModalVisible });
 	}
@@ -73,7 +73,7 @@ class Search extends React.Component {
 		this.setState({ modalVisible: visible });
 	};
 
-	async _loadFilms() {
+	async _loadFilms () {
 		if (this.searchedText.length > 0) {
 			this.setState({ isLoading: true });
 			let toto = await getApexData(this.searchedText, this.state.platform);
@@ -92,11 +92,11 @@ class Search extends React.Component {
 		this.setState({ platform: platform });
 	};
 
-	_searchTextInputChanged(text) {
+	_searchTextInputChanged (text) {
 		this.searchedText = text;
 	}
 
-	_searchFilms() {
+	_searchFilms () {
 		this.setState(
 			{
 				films: [],
@@ -115,7 +115,7 @@ class Search extends React.Component {
 	// 	this.props.navigation.navigate('FilmDetail', { idFilm: idFilm });
 	// };
 
-	_displayLoading() {
+	_displayLoading () {
 		if (this.state.isLoading) {
 			return (
 				<View style={styles.loading_container}>
@@ -125,7 +125,7 @@ class Search extends React.Component {
 		}
 	}
 
-	render() {
+	render () {
 		const navigation = this.props.navigation;
 		return (
 			<View style={styles.main_container}>
@@ -152,8 +152,8 @@ class Search extends React.Component {
 								// style={{ height: 10, width: 100 }}
 								itemStyle={{ backgroundColor: 'grey', fontSize: 17 }}>
 								<Picker.Item label='psn' value='psn' />
-								<Picker.Item label='xb1' value='xb1' />
-								<Picker.Item label='pc' value='pc' />
+								<Picker.Item label='xb1' value='xbl' />
+								<Picker.Item label='pc' value='origin' />
 							</Picker>
 							<Button title='Rechercher' onPress={() => this._searchFilms()} />
 

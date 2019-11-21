@@ -21,7 +21,7 @@ class ProfileApex extends React.Component {
 		this._toggleFavorite = this._toggleFavorite.bind(this);
 	}
 
-	_displayFavoriteImage() {
+	_displayFavoriteImage () {
 		var sourceImage = require('../Images/ic_favorite_border.png');
 		var shouldEnlarge = false; // Par défaut, si le film n'est pas en favoris, on veut qu'au clic sur le bouton, celui-ci s'agrandisse => shouldEnlarge à true
 
@@ -39,12 +39,12 @@ class ProfileApex extends React.Component {
 		);
 	}
 
-	_toggleFavorite() {
+	_toggleFavorite () {
 		const action = { type: 'TOGGLE_FAVORITE_PROFILE', value: [this.props.profile] };
 		this.props.dispatch(action);
 	}
 
-	render() {
+	render () {
 		const { profile, bool } = this.props;
 		let platform;
 		let platformSlug;
@@ -54,10 +54,10 @@ class ProfileApex extends React.Component {
 				case 'psn':
 					platform = require('../Images/ic-playstation.png');
 					break;
-				case 'xb1':
+				case 'xbl':
 					platform = require('../Images/ic-xbox.png');
 					break;
-				case 'pc':
+				case 'origin':
 					platform = require('../Images/ic-pc.png');
 					break;
 			}
