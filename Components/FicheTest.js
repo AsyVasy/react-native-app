@@ -1,4 +1,4 @@
-// Components/ProfileApex.js
+// Components/FavoriteProfile.js
 
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, ImageBackground } from 'react-native';
@@ -7,30 +7,12 @@ import FadeIn from '../Animations/FadeIn';
 import { Platform } from '@unimodules/core';
 import EnlargeShrink from '../Animations/EnlargeShrink';
 import Flag from 'react-native-flags';
+import { connect } from 'react-redux';
+import FavoriteList from './FavoriteList';
 
-class ProfileApex extends React.Component {
+class FavoriteProfile extends React.Component {
 	render() {
-		const { bool } = this.props;
-		let platoformo = 'xb1';
-		let platform;
-		if (!bool) {
-			switch (platoformo) {
-				case 'psn':
-					platform = require('../Images/ic-playstation.png');
-				case 'xb1':
-					platform = require('../Images/ic-xbox.png');
-				case 'pc':
-					platform = require('../Images/ic-pc.png');
-			}
-			console.log(platform);
-			return (
-				<ImageBackground source={require('../Images/wp-apex1.png')} style={{ width: '100%', height: '100%' }}>
-					<Text>Inside</Text>
-				</ImageBackground>
-			);
-		} else {
-			return <Text style={styles.title_text}> </Text>;
-		}
+		return <FavoriteList profile={this.props.favoritesProfile} navigation={this.props.navigation} />;
 	}
 }
 
@@ -83,4 +65,15 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ProfileApex;
+// export default FavoriteProfile;
+
+// On connecte le store Redux, ainsi que les films favoris du state de notre application, à notre component Search
+const mapStateToProps = state => {
+	console.log('mapstatetoprops favoriteProfile');
+	return {
+		favoritesFilm: state.favoritesFilm,
+		favoritesProfile: state.favoritesProfile,
+	};
+};
+
+export default connect(mapStateToProps)(FavoriteProfile);

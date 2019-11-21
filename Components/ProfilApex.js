@@ -1,21 +1,54 @@
 // Components/ProfileApex.js
 
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, Button } from 'react-native';
 import { getImageFromApi } from '../API/TMDBApi';
 import FadeIn from '../Animations/FadeIn';
 // import { Platform } from '@unimodules/core';
 import EnlargeShrink from '../Animations/EnlargeShrink';
 import Flag from 'react-native-flags';
+import { connect } from 'react-redux';
 
 class ProfileApex extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			profile: undefined,
+			isLoading: false,
+		};
+
+		// Ne pas oublier de binder la fonction _shareFilm sinon, lorsqu'on va l'appeler depuis le headerRight de la navigation, this.state.film sera undefined et fera planter l'application
+		this._toggleFavorite = this._toggleFavorite.bind(this);
+	}
+
+	_displayFavoriteImage() {
+		var sourceImage = require('../Images/ic_favorite_border.png');
+		var shouldEnlarge = false; // Par défaut, si le film n'est pas en favoris, on veut qu'au clic sur le bouton, celui-ci s'agrandisse => shouldEnlarge à true
+
+		let favo = this.props.favoritesProfile;
+		let actuProfile = this.props.profile.platformInfo.platformUserId;
+
+		if (favo.find(item => item.platformInfo.platformUserId === actuProfile) !== undefined) {
+			sourceImage = require('../Images/ic_favorite.png');
+			shouldEnlarge = true; // Si le film est dans les favoris, on veut qu'au clic sur le bouton, celui-ci se rétrécisse => shouldEnlarge à false
+		}
+		return (
+			<EnlargeShrink shouldEnlarge={shouldEnlarge}>
+				<Image style={styles.favorite_image} source={sourceImage} />
+			</EnlargeShrink>
+		);
+	}
+
+	_toggleFavorite() {
+		const action = { type: 'TOGGLE_FAVORITE_PROFILE', value: [this.props.profile] };
+		this.props.dispatch(action);
+	}
+
 	render() {
 		const { profile, bool } = this.props;
 		let platform;
 		let platformSlug;
-		if (bool) {
-			console.log('platformSlug => ', profile.platformInfo.platformSlug);
-			console.log('countryCode => ', profile.segments[1].metadata.name);
+		if (bool && profile) {
 			platformSlug = profile.platformInfo.platformSlug;
 			switch (platformSlug) {
 				case 'psn':
@@ -52,10 +85,13 @@ class ProfileApex extends React.Component {
 					<Text> Score: {profile.segments[0].stats.rankScore.displayValue}</Text>
 					<Text> Last Character Played: {profile.segments[1].metadata.name}</Text>
 					<Image style={styles.rank_image} source={{ uri: profile.segments[1].metadata.imageUrl }} />
+					<TouchableOpacity style={styles.favorite_container} onPress={() => this._toggleFavorite()}>
+						{this._displayFavoriteImage()}
+					</TouchableOpacity>
 				</FadeIn>
 			);
 		} else {
-			return <Text style={styles.title_text}> </Text>;
+			return <Button title='TEST' onPress={() => console.log(this.props)} />;
 		}
 	}
 }
@@ -109,4 +145,12 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ProfileApex;
+// On connecte le store Redux, ainsi que les films favoris du state de notre application, à notre component Search
+const mapStateToProps = state => {
+	return {
+		favoritesFilm: state.favoritesFilm,
+		favoritesProfile: state.favoritesProfile,
+	};
+};
+
+export default connect(mapStateToProps)(ProfileApex);

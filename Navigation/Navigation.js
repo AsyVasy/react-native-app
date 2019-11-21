@@ -11,6 +11,7 @@ import Favorites from '../Components/Favorites';
 // import Test from '../Components/Test';
 import FicheTest from '../Components/FicheTest';
 import SearchApex from '../Components/SearchApex';
+import ProfilApex from '../Components/ProfilApex';
 
 const SearchStackNavigator = createStackNavigator({
 	Search: {
@@ -23,55 +24,61 @@ const SearchStackNavigator = createStackNavigator({
 		screen: FilmDetail,
 	},
 });
+
 const SearchApexStackNavigator = createStackNavigator({
-	Apex: {
+	Home: {
 		screen: SearchApex,
 		navigationOptions: {
 			title: 'Home',
 		},
 	},
 });
+
 const TestStackNavigator = createStackNavigator({
-	Apex: {
+	MyApexFavo: {
 		screen: FicheTest,
 		navigationOptions: {
-			title: 'Test',
+			title: 'My Favorites Legends',
 		},
+	},
+	ProfileApex: {
+		screen: ProfilApex,
 	},
 });
 
 const MoviesTabNavigator = createBottomTabNavigator(
 	{
-		// Search: {
-		// 	screen: SearchStackNavigator,
-		// 	navigationOptions: {
-		// 		tabBarIcon: () => {
-		// 			// On définit le rendu de nos icônes par les images récemment ajoutés au projet
-		// 			return <Image source={require('../Images/ic_search.png')} style={styles.icon} />; // On applique un style pour les redimensionner comme il faut
-		// 		},
-		// 	},
-		// },
-		// Favorites: {
-		// 	screen: Favorites,
-		// 	navigationOptions: {
-		// 		tabBarIcon: () => {
-		// 			return <Image source={require('../Images/ic_favorite.png')} style={styles.icon} />;
-		// 		},
-		// 	},
-		// },
-		Test: {
-			screen: TestStackNavigator,
+		Search: {
+			screen: SearchStackNavigator,
 			navigationOptions: {
 				tabBarIcon: () => {
-					return <Image source={require('../Images/ic-playstation.png')} style={styles.icon} />;
+					// On définit le rendu de nos icônes par les images récemment ajoutés au projet
+					return <Image source={require('../Images/ic_search.png')} style={styles.icon} />; // On applique un style pour les redimensionner comme il faut
 				},
 			},
 		},
+		Favorites: {
+			screen: Favorites,
+			navigationOptions: {
+				tabBarIcon: () => {
+					return <Image source={require('../Images/ic_favorite.png')} style={styles.icon} />;
+				},
+			},
+		},
+
 		Apex: {
 			screen: SearchApexStackNavigator,
 			navigationOptions: {
 				tabBarIcon: () => {
 					return <Image source={require('../Images/ic-apex-legends.png')} style={styles.icon} />;
+				},
+			},
+		},
+		Test: {
+			screen: TestStackNavigator,
+			navigationOptions: {
+				tabBarIcon: () => {
+					return <Image source={require('../Images/ic-playstation.png')} style={styles.icon} />;
 				},
 			},
 		},
@@ -88,8 +95,8 @@ const MoviesTabNavigator = createBottomTabNavigator(
 
 const styles = StyleSheet.create({
 	icon: {
-		width: 55,
-		height: 55,
+		width: 50,
+		height: 50,
 	},
 });
 

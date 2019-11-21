@@ -51,6 +51,7 @@ class Search extends React.Component {
 
 	_displayDetailForFilm = idFilm => {
 		console.log('Display film with id ' + idFilm);
+
 		this.props.navigation.navigate('FilmDetail', { idFilm: idFilm });
 	};
 
@@ -58,7 +59,7 @@ class Search extends React.Component {
 		if (this.state.isLoading) {
 			return (
 				<View style={styles.loading_container}>
-					<ActivityIndicator size="large" />
+					<ActivityIndicator size='large' />
 				</View>
 			);
 		}
@@ -69,11 +70,11 @@ class Search extends React.Component {
 			<View style={styles.main_container}>
 				<TextInput
 					style={styles.textinput}
-					placeholder="Titre du film"
+					placeholder='Titre du film'
 					onChangeText={text => this._searchTextInputChanged(text)}
 					onSubmitEditing={() => this._searchFilms()}
 				/>
-				<Button title="Rechercher" onPress={() => this._searchFilms()} />
+				<Button title='Rechercher' onPress={() => this._searchFilms()} />
 				<FlatList
 					data={this.state.films}
 					extraData={this.props.favoritesFilm}

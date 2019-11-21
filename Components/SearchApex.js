@@ -21,7 +21,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfilApex from './ProfilApex';
 import { getFilmsFromApiWithSearchedText, getApexData } from '../API/TMDBApi';
 import { connect } from 'react-redux';
-import ProfileApex from './ProfilApex';
 
 class Search extends React.Component {
 	constructor(props) {
@@ -120,23 +119,21 @@ class Search extends React.Component {
 		if (this.state.isLoading) {
 			return (
 				<View style={styles.loading_container}>
-					<ActivityIndicator size="large" />
+					<ActivityIndicator size='large' />
 				</View>
 			);
 		}
 	}
 
 	render() {
-		console.log('render ');
-		// console.log(this.state);
-		// const profile = this.state.profile;
+		const navigation = this.props.navigation;
 		return (
 			<View style={styles.main_container}>
 				<ScrollView>
 					{this._displayLoading()}
 					<Text>Search for a profil </Text>
 					<Modal
-						animationType="slide"
+						animationType='slide'
 						transparent={false}
 						visible={this.state.modalVisible}
 						onRequestClose={() => {
@@ -145,7 +142,7 @@ class Search extends React.Component {
 						<View style={{ marginTop: 22 }}>
 							<TextInput
 								style={styles.textinput}
-								placeholder="pseudo"
+								placeholder='pseudo'
 								onChangeText={text => this._searchTextInputChanged(text)}
 								onSubmitEditing={() => this._searchFilms()}
 							/>
@@ -154,11 +151,11 @@ class Search extends React.Component {
 								onValueChange={this._updatePlatform}
 								// style={{ height: 10, width: 100 }}
 								itemStyle={{ backgroundColor: 'grey', fontSize: 17 }}>
-								<Picker.Item label="psn" value="psn" />
-								<Picker.Item label="xb1" value="xb1" />
-								<Picker.Item label="pc" value="pc" />
+								<Picker.Item label='psn' value='psn' />
+								<Picker.Item label='xb1' value='xb1' />
+								<Picker.Item label='pc' value='pc' />
 							</Picker>
-							<Button title="Rechercher" onPress={() => this._searchFilms()} />
+							<Button title='Rechercher' onPress={() => this._searchFilms()} />
 
 							<TouchableHighlight
 								onPress={() => {
@@ -169,7 +166,12 @@ class Search extends React.Component {
 						</View>
 					</Modal>
 
-					<ProfilApex profile={this.state.profile} bool={this.state.bool} />
+					<ProfilApex
+						profile={this.state.profile}
+						isFavoritesProfile={this.props.favoritesProfile}
+						// isFavoritesProfile={this.props.favoritesProfile.findIndex(profile => profile.id === item.id) !== -1 ? true : false}
+						bool={this.state.bool}
+					/>
 				</ScrollView>
 			</View>
 		);
@@ -217,6 +219,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
 	return {
 		favoritesFilm: state.favoritesFilm,
+		favoritesProfile: state.favoritesProfile,
 	};
 };
 
