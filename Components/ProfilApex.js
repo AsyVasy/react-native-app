@@ -21,12 +21,12 @@ class ProfileApex extends React.Component {
 		this._toggleFavorite = this._toggleFavorite.bind(this);
 	}
 
-	_displayFavoriteImage () {
+	_displayFavoriteImage (profile) {
 		var sourceImage = require('../Images/ic_favorite_border.png');
 		var shouldEnlarge = false; // Par défaut, si le film n'est pas en favoris, on veut qu'au clic sur le bouton, celui-ci s'agrandisse => shouldEnlarge à true
 
 		let favo = this.props.favoritesProfile;
-		let actuProfile = this.props.profile.platformInfo.platformUserId;
+		let actuProfile = profile.platformInfo.platformUserId;
 
 		if (favo.find(item => item.platformInfo.platformUserId === actuProfile) !== undefined) {
 			sourceImage = require('../Images/ic_favorite.png');
@@ -44,10 +44,18 @@ class ProfileApex extends React.Component {
 		this.props.dispatch(action);
 	}
 
-	render () {
-		const { profile, bool } = this.props;
+	_getProfile () {
+		let bool
+		if (this.props.navigation.state.params.bool) bool = this.props.navigation.state.params.bool
+		else if (this.props.bool) bool = this.props.bool
+		else bool = false
+	}
+
+	_displayProfileOrNot (bool, profile) {
 		let platform;
 		let platformSlug;
+		let displayProfile
+
 		if (bool && profile) {
 			platformSlug = profile.platformInfo.platformSlug;
 			switch (platformSlug) {
@@ -62,7 +70,7 @@ class ProfileApex extends React.Component {
 					break;
 			}
 
-			return (
+			displayProfile = (
 				<FadeIn>
 					<TouchableOpacity style={styles.main_container}>
 						<View style={styles.avatar_and_flag}>
@@ -86,13 +94,61 @@ class ProfileApex extends React.Component {
 					<Text> Last Character Played: {profile.segments[1].metadata.name}</Text>
 					<Image style={styles.rank_image} source={{ uri: profile.segments[1].metadata.imageUrl }} />
 					<TouchableOpacity style={styles.favorite_container} onPress={() => this._toggleFavorite()}>
-						{this._displayFavoriteImage()}
+						{this._displayFavoriteImage(profile)}
 					</TouchableOpacity>
-				</FadeIn>
-			);
-		} else {
-			return <Button title='TEST' onPress={() => console.log(this.props)} />;
+				</FadeIn>)
+
 		}
+		else {
+			displayProfile = (
+				<View>
+
+
+					<Button title='bool' onPress={() => console.log(this.props.bool)} />
+					<Button title='bool' onPress={() => console.log(this.props.navigation.state.params.bool)} />
+					<Button title='favoritesFilm' onPress={() => console.log(this.props.favoritesFilm)} />
+					<Button title='favoritesProfile' onPress={() => console.log(this.props.favoritesProfile)} />
+					<Button title='isFavoritesProfile' onPress={() => console.log(this.props.isFavoritesProfile)} />
+					<Button title='profile' onPress={() => console.log(this.props.profile)} />
+					<Button title='profile' onPress={() => console.log(this.props.navigation.state.params.profile)} />
+				</View>
+			)
+
+
+		}
+
+		return displayProfile
+	}
+
+	render () {
+		console.log('rendre profile')
+		// const { profile, bool } = this.props
+		let bool
+		if (this.props.navigation) bool = this.props.navigation.state.params.bool
+		else if (this.props.bool) bool = this.props.bool
+		else bool = false
+
+		let profile
+		if (this.props.navigation) {
+			console.log('lala 1')
+			profile = this.props.navigation.state.params.profile
+		}
+		else if
+			(this.props.profile) {
+			profile = this.props.profile
+			console.log('lala 2', profile)
+
+		}
+		else {
+			console.log('lala 3')
+			profile = false
+
+		}
+
+		return this._displayProfileOrNot(bool, profile)
+
+
+
 	}
 }
 

@@ -7,8 +7,10 @@ import ProfileApex from './ProfilApex';
 
 import { connect } from 'react-redux';
 
-function Item({ title, profile, navigation }) {
+function Item ({ title, profile, navigation }) {
+	console.log("frlfrplfrokgk,zog i")
 	return (
+
 		<TouchableOpacity
 			style={styles.item}
 			onPress={() => navigation.navigate('ProfileApex', { profile: profile, bool: true })}>
@@ -31,13 +33,13 @@ class FavoriteList extends React.Component {
 	//   this.props.navigation.navigate('FilmDetail', { idFilm: idFilm })
 	// }
 
-	_test() {
+	_test () {
 		let toto = this.props.favoritesProfile;
 		if (toto) toto.forEach(elem => console.log(elem.platformInfo));
 		else console.log('pas toto');
 	}
 
-	render() {
+	render () {
 		const navigation = this.props.navigation;
 		return (
 			// <View>
