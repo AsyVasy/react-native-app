@@ -8,7 +8,8 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Search from '../Components/Search';
 import FilmDetail from '../Components/FilmDetail';
 import Favorites from '../Components/Favorites';
-// import Test from '../Components/Test';
+import Test from '../Components/Test';
+import Login from '../Components/Login';
 import FicheTest from '../Components/FicheTest';
 import SearchApex from '../Components/SearchApex';
 import ProfilApex from '../Components/ProfilApex';
@@ -45,6 +46,15 @@ const TestStackNavigator = createStackNavigator({
 		screen: ProfilApex,
 	},
 });
+const LoginStackNavigator = createStackNavigator({
+	LoginPage: {
+		screen: Login,
+		navigationOptions: {
+			title: 'Login',
+		},
+	},
+
+});
 
 const MoviesTabNavigator = createBottomTabNavigator(
 	{
@@ -66,6 +76,14 @@ const MoviesTabNavigator = createBottomTabNavigator(
 		// 	},
 		// },
 
+		Login: {
+			screen: LoginStackNavigator,
+			navigationOptions: {
+				tabBarIcon: () => {
+					return <Image source={require('../Images/ic-apex-legends.png')} style={styles.icon} />;
+				},
+			},
+		},
 		Apex: {
 			screen: SearchApexStackNavigator,
 			navigationOptions: {
