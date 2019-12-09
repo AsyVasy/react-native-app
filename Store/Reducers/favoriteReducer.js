@@ -1,6 +1,6 @@
 // Store/Reducers/favoriteReducer.js
 
-const initialState = { favoritesFilm: [], favoritesProfile: [], test: [] };
+const initialState = { favoritesFilm: [], favoritesProfile: [], statusPageToProfile: '' };
 
 function toggleFavorite(state = initialState, action) {
 	console.log('toggleFavorite REDUCER');
@@ -22,6 +22,7 @@ function toggleFavorite(state = initialState, action) {
 				};
 			}
 			return nextState || state;
+
 		case 'TOGGLE_FAVORITE_PROFILE':
 			const isEqualName = elem => elem === action.value[0].platformInfo.platformUserId;
 
@@ -76,6 +77,14 @@ function toggleFavorite(state = initialState, action) {
 			}
 
 			return nextState || state;
+
+		case 'MANAGE_PROFILE':
+			nextState = {
+				...state,
+				statusPageToProfile: action.value,
+			};
+			return nextState || state;
+
 		default:
 			return state;
 	}

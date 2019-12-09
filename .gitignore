@@ -10,3 +10,5 @@ npm-debug.*
 web-build/
 web-report/
 API/
+
+back/utils/config.var.js

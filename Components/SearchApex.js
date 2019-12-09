@@ -15,6 +15,7 @@ import {
 	Image,
 	Button,
 	TouchableOpacity,
+	AsyncStorage,
 } from 'react-native';
 // import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -45,9 +46,25 @@ class Search extends React.Component {
 			headerRight: (
 				<TouchableOpacity
 					style={styles.share_touchable_headerrightbutton}
-					onPress={() => console.log('GO PROFILE')}>
+					onPress={() => navigation.navigate('Login')}>
 					<Image style={styles.share_image} source={require('../Images/ic-profile.png')} />
 				</TouchableOpacity>
+
+				// <TouchableOpacity
+				// 	style={styles.share_touchable_headerrightbutton}
+				// 	onPress={async () => {
+				// 		const value = await AsyncStorage.getItem('user');
+				// 		if (!value) {
+				// 			navigation.navigate('Login');
+				// 			console.log('user =>', value);
+				// 		} else {
+				// 			navigation.navigate('Profile');
+
+				// 			console.log('user =>', value);
+				// 		}
+				// 	}}>
+				// 	<Image style={styles.share_image} source={require('../Images/ic-profile.png')} />
+				// </TouchableOpacity>
 			),
 			headerLeft: (
 				<TouchableOpacity
@@ -64,7 +81,7 @@ class Search extends React.Component {
 		// }
 	};
 
-	componentWillMount () {
+	componentWillMount() {
 		// this.setModalVisible = this.setModalVisible.bind(this);
 		this.props.navigation.setParams({ getSearchModal: this._setModalVisible });
 	}
@@ -73,7 +90,7 @@ class Search extends React.Component {
 		this.setState({ modalVisible: visible });
 	};
 
-	async _loadFilms () {
+	async _loadFilms() {
 		if (this.searchedText.length > 0) {
 			this.setState({ isLoading: true });
 			let toto = await getApexData(this.searchedText, this.state.platform);
@@ -92,11 +109,11 @@ class Search extends React.Component {
 		this.setState({ platform: platform });
 	};
 
-	_searchTextInputChanged (text) {
+	_searchTextInputChanged(text) {
 		this.searchedText = text;
 	}
 
-	_searchFilms () {
+	_searchFilms() {
 		this.setState(
 			{
 				films: [],
@@ -115,7 +132,7 @@ class Search extends React.Component {
 	// 	this.props.navigation.navigate('FilmDetail', { idFilm: idFilm });
 	// };
 
-	_displayLoading () {
+	_displayLoading() {
 		if (this.state.isLoading) {
 			return (
 				<View style={styles.loading_container}>
@@ -125,7 +142,7 @@ class Search extends React.Component {
 		}
 	}
 
-	render () {
+	render() {
 		const navigation = this.props.navigation;
 		return (
 			<View style={styles.main_container}>

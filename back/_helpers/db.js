@@ -1,16 +1,12 @@
 // const config = require("config.json");
 const mysql = require('mysql');
+const connectionVar = require('./utils/config.var')();
 
 // const mongoose = require('mongoose');
 // mongoose.connect(process.env.MONGODB_URI || config.connectionString, { useCreateIndex: true, useNewUrlParser: true });
 // mongoose.Promise = global.Promise;
 
-const db = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'app',
-});
+const db = mysql.createConnection(connectionVar.connection);
 
 // connect to database
 db.connect(err => {

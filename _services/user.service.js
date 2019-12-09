@@ -1,4 +1,6 @@
 import { authHeader } from '../_helpers';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 
 export const userService = {
 	login,
@@ -7,31 +9,35 @@ export const userService = {
 	register,
 };
 
-function login(username, password) {
+async function login(username, password) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ username, password }),
 	};
 
-	return fetch(`http://localhost:4000/users/authenticate`, requestOptions)
+	return fetch(`http://193.70.40.200:3000/users/authenticate`, requestOptions)
 		.then(handleResponse)
-		.then(user => {
+		.then(async user => {
 			// login successful if there's a user in the response
 			if (user) {
 				// store user details and basic auth credentials in local storage
 				// to keep user logged in between page refreshes
 				// user.authdata = window.btoa(username + ":" + password);
-				localStorage.setItem('user', JSON.stringify(user));
+				try {
+					await AsyncStorage.setItem('user', JSON.stringify(user));
+				} catch (e) {
+					// saving error
+				}
 			}
-
 			return user;
 		});
 }
 
 function logout() {
 	// remove user from local storage to log user out
-	localStorage.removeItem('user');
+	console.log('logout');
+	AsyncStorage.removeItem('user');
 }
 
 function getAll() {
@@ -67,7 +73,7 @@ function register(username, password, lastname) {
 		body: JSON.stringify({ username, password, lastname }),
 	};
 
-	return fetch(`http://localhost:4000/users/createUser`, requestOptions)
+	return fetch(`http://193.70.40.200:3000/users/createUser`, requestOptions)
 		.then(handleResponse)
 		.then(user => {
 			console.log(user);

@@ -13,6 +13,7 @@ import Login from '../Components/Login';
 import FicheTest from '../Components/FicheTest';
 import SearchApex from '../Components/SearchApex';
 import ProfilApex from '../Components/ProfilApex';
+import ProfilePage from '../Components/ProfilePage';
 
 // const SearchStackNavigator = createStackNavigator({
 // 	Search: {
@@ -33,6 +34,18 @@ const SearchApexStackNavigator = createStackNavigator({
 			title: 'Home',
 		},
 	},
+	Profile: {
+		screen: ProfilePage,
+		navigationOptions: {
+			title: 'Profile',
+		},
+	},
+	Login: {
+		screen: Login,
+		navigationOptions: {
+			title: 'Login',
+		},
+	},
 });
 
 const TestStackNavigator = createStackNavigator({
@@ -46,15 +59,14 @@ const TestStackNavigator = createStackNavigator({
 		screen: ProfilApex,
 	},
 });
-const LoginStackNavigator = createStackNavigator({
-	LoginPage: {
-		screen: Login,
-		navigationOptions: {
-			title: 'Login',
-		},
-	},
-
-});
+// const LoginStackNavigator = createStackNavigator({
+// 	LoginPage: {
+// 		screen: Login,
+// 		navigationOptions: {
+// 			title: 'Login',
+// 		},
+// 	},
+// });
 
 const MoviesTabNavigator = createBottomTabNavigator(
 	{
@@ -76,14 +88,14 @@ const MoviesTabNavigator = createBottomTabNavigator(
 		// 	},
 		// },
 
-		Login: {
-			screen: LoginStackNavigator,
-			navigationOptions: {
-				tabBarIcon: () => {
-					return <Image source={require('../Images/ic-apex-legends.png')} style={styles.icon} />;
-				},
-			},
-		},
+		// Login: {
+		// 	screen: LoginStackNavigator,
+		// 	navigationOptions: {
+		// 		tabBarIcon: () => {
+		// 			return <Image source={require('../Images/ic-apex-legends.png')} style={styles.icon} />;
+		// 		},
+		// 	},
+		// },
 		Apex: {
 			screen: SearchApexStackNavigator,
 			navigationOptions: {

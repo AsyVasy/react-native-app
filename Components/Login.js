@@ -1,9 +1,14 @@
 // Components/Test.js
 
 import React from 'react';
-import { StyleSheet, View, Animated, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Animated, Text, TextInput, Button, AsyncStorage } from 'react-native';
 import { userService } from '../_services';
+import ProfilePage from './ProfilePage';
+import LoginPage from './LoginPage';
+import { connect } from 'react-redux';
+
 const axios = require('axios');
+// import AsyncStorage from '@react-native-community/async-storage';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -15,6 +20,8 @@ class Login extends React.Component {
 			loading: false,
 			error: '',
 			redirected: false,
+			toProfile: '0',
+			user: {},
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -28,52 +35,74 @@ class Login extends React.Component {
 	}
 
 	async handleSubmit(e) {
-		// e.preventDefault();
-
 		const { username, password } = this.state;
-
-		console.log('username :', username);
-		console.log('password :', password);
 		userService
 			.login(username, password)
 			.then(result => {
-				console.log('ok');
-				this.setState({ redirected: true });
+				// this.setState({ toProfile: true });
+				console.log('res ', result);
+				const action = { type: 'MANAGE_PROFILE', value: '1' };
+				this.props.dispatch(action);
+				this.setState({ toProfile: this.props.statusPageToProfile });
+				this.setState({ user: result });
 			})
 			.catch(err => {
 				console.log();
 			});
 	}
 
-	_checkLogin() {
-		const { username, password } = this.state;
-		console.log('hey there ');
-		if (username === 'toto' && password === 'toto') {
-			console.log('CCCOOOL');
-		} else {
-			console.log('no coooool');
+	async _checkLogin() {
+		try {
+			const action = { type: 'MANAGE_PROFILE', value: '1' };
+			this.props.dispatch(action);
+			this.setState({ toProfile: this.props.statusPageToProfile });
+		} catch (e) {
+			// error reading value
+		}
+	}
+
+	async componentWillMount() {
+		let value = await AsyncStorage.getItem('user');
+		let toto = JSON.parse(value);
+		if (value !== null) {
+			console.log(value);
+			this.setState({ toProfile: '1' });
+			this.setState({ user: toto });
 		}
 	}
 
 	render() {
-		return (
-			<View>
-				<Text style={styles.title_text}>Login</Text>
-				<TextInput
-					style={styles.textinput}
-					placeholder='username'
-					name='username'
-					onChangeText={text => this.setState({ username: text })}></TextInput>
+		let { user, toProfile } = this.state;
+		if (toProfile == '0') {
+			return (
+				<View>
+					<Text style={styles.title_text}>Login</Text>
 
-				<TextInput
-					style={styles.textinput}
-					placeholder='password'
-					secureTextEntry={true}
-					onChangeText={text => this.setState({ password: text })}></TextInput>
-				<Button title='LOGIN' onPress={() => this._checkLogin()}></Button>
-				<Button title='LOGIN' onPress={() => this.handleSubmit()}></Button>
-			</View>
-		);
+					<TextInput
+						style={styles.textinput}
+						placeholder='username'
+						name='username'
+						onChangeText={text => this.setState({ username: text })}></TextInput>
+
+					<TextInput
+						style={styles.textinput}
+						placeholder='password'
+						secureTextEntry={true}
+						onChangeText={text => this.setState({ password: text })}></TextInput>
+					<Button title='LOGIN' onPress={() => this._checkLogin()}></Button>
+					<Button title='Login' onPress={() => this.handleSubmit()}></Button>
+
+					<Text>NONOO</Text>
+				</View>
+			);
+		} else if (toProfile == '1') {
+			return <ProfilePage user={user} navigation={this.props.navigation} />;
+		} else
+			return (
+				<View>
+					<Text>Bravo</Text>
+				</View>
+			);
 	}
 }
 
@@ -120,4 +149,14 @@ const styles = StyleSheet.create({
 		backgroundColor: 'grey',
 	},
 });
-export default Login;
+
+// On connecte le store Redux, ainsi que les films favoris du state de notre application, à notre component Search
+const mapStateToProps = state => {
+	return {
+		favoritesFilm: state.favoritesFilm,
+		favoritesProfile: state.favoritesProfile,
+		statusPageToProfile: state.statusPageToProfile,
+	};
+};
+
+export default connect(mapStateToProps)(Login);
