@@ -1,6 +1,6 @@
 // const config = require("config.json");
 const mysql = require('mysql');
-const connectionVar = require('./utils/config.var')();
+const connectionVar = require('../utils/config.var')();
 
 // const mongoose = require('mongoose');
 // mongoose.connect(process.env.MONGODB_URI || config.connectionString, { useCreateIndex: true, useNewUrlParser: true });
