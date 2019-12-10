@@ -12,7 +12,30 @@ module.exports = {
 	getById,
 	updateUser,
 	deleteUser,
+	create,
+	authenticateBis,
 };
+
+function create(clbk, data) {
+	console.log(data);
+	const q = 'INSERT INTO `users`(`username`, `password`, `lastname`, `firstname`) VALUES (?,?, ?, ?)';
+	const payload = [data.username, data.password, data.lastname, data.firstname];
+
+	db.query(q, payload, (err, res, cols) => {
+		console.log(this.sql); // affiche la dernière requête SQL, pratique pour deboguer
+		if (err) return clbk(err, null);
+		return clbk(null, res);
+	});
+}
+
+async function authenticateBis(clbk, user) {
+	const sql = `SELECT * FROM users WHERE username = ?`;
+	const q = db.query(sql, user.username, (err, user) => {
+		if (err) return clbk(err, null);
+		return clbk(null, ...user);
+	});
+	console.log(q.sql);
+}
 
 async function authenticate({ username, password }) {
 	var sql =
