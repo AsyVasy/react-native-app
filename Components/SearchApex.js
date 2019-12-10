@@ -7,7 +7,6 @@ import {
 	TextInput,
 	Picker,
 	Text,
-	FlatList,
 	ActivityIndicator,
 	ScrollView,
 	Modal,
@@ -15,14 +14,10 @@ import {
 	Image,
 	Button,
 	TouchableOpacity,
-	AsyncStorage,
 } from 'react-native';
-// import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfilApex from './ProfilApex';
-import { getFilmsFromApiWithSearchedText, getApexData } from '../API/TMDBApi';
 import { connect } from 'react-redux';
-
+import { getApexData } from '../_services/apex.services';
 class Search extends React.Component {
 	constructor(props) {
 		super(props);
