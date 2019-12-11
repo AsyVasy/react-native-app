@@ -7,6 +7,7 @@ export const userService = {
 	logout,
 	getAll,
 	register,
+	registerBis,
 };
 
 async function login(username, password) {
@@ -74,6 +75,24 @@ function register(username, password, lastname) {
 	};
 
 	return fetch(`http://193.70.40.200:3000/users/createUser`, requestOptions)
+		.then(handleResponse)
+		.then(user => {
+			console.log(user);
+			// register successful if there's a user in the response
+			if (user) {
+			}
+
+			return user;
+		});
+}
+function registerBis(username, password, lastname, firstname) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ username, password, lastname, firstname }),
+	};
+
+	return fetch(`http://193.70.40.200:3000/users/registerbis`, requestOptions)
 		.then(handleResponse)
 		.then(user => {
 			console.log(user);

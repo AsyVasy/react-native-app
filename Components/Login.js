@@ -14,8 +14,10 @@ class Login extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: 'aaa',
-			password: 'aaa',
+			username: 'jo',
+			firstname: '',
+			lastname: '',
+			password: '1234',
 			submitted: false,
 			loading: false,
 			error: '',
@@ -34,13 +36,33 @@ class Login extends React.Component {
 		console.log(name, value);
 	}
 
+	_goRegister(index) {
+		this.setState({ toProfile: index });
+	}
+
 	async handleSubmit(e) {
 		const { username, password } = this.state;
 		userService
 			.login(username, password)
 			.then(result => {
 				// this.setState({ toProfile: true });
-				console.log('res ', result);
+				// console.log('res ', result);
+				const action = { type: 'MANAGE_PROFILE', value: '1' };
+				this.props.dispatch(action);
+				this.setState({ toProfile: this.props.statusPageToProfile });
+				this.setState({ user: result });
+			})
+			.catch(err => {
+				console.log();
+			});
+	}
+	async handleSubmitRegister(e) {
+		const { username, password, lastname, firstname } = this.state;
+		userService
+			.registerBis(username, password, lastname, firstname)
+			.then(result => {
+				// this.setState({ toProfile: true });
+				// console.log('res ', result);
 				const action = { type: 'MANAGE_PROFILE', value: '1' };
 				this.props.dispatch(action);
 				this.setState({ toProfile: this.props.statusPageToProfile });
@@ -65,7 +87,7 @@ class Login extends React.Component {
 		let value = await AsyncStorage.getItem('user');
 		let toto = JSON.parse(value);
 		if (value !== null) {
-			console.log(value);
+			// console.log(value);
 			this.setState({ toProfile: '1' });
 			this.setState({ user: toto });
 		}
@@ -89,20 +111,54 @@ class Login extends React.Component {
 						placeholder='password'
 						secureTextEntry={true}
 						onChangeText={text => this.setState({ password: text })}></TextInput>
-					<Button title='LOGIN' onPress={() => this._checkLogin()}></Button>
+					{/* <Button title='LOGIN' onPress={() => this._checkLogin()}></Button> */}
 					<Button title='Login' onPress={() => this.handleSubmit()}></Button>
-
-					<Text>NONOO</Text>
+					<Button
+						title="If you don't have any account clic here to register"
+						onPress={() => this._goRegister('2')}></Button>
 				</View>
 			);
-		} else if (toProfile == '1') {
+		} else if (toProfile == '1' && user) {
 			return <ProfilePage user={user} navigation={this.props.navigation} />;
-		} else
+		} else if (toProfile == '2') {
 			return (
 				<View>
-					<Text>Bravo</Text>
+					<Text style={styles.title_text}>Register</Text>
+
+					<TextInput
+						style={styles.textinput}
+						placeholder='username'
+						name='username'
+						onChangeText={text => this.setState({ username: text })}></TextInput>
+
+					<TextInput
+						style={styles.textinput}
+						placeholder='firstname'
+						name='firstname'
+						onChangeText={text => this.setState({ firstname: text })}></TextInput>
+
+					<TextInput
+						style={styles.textinput}
+						placeholder='lastname'
+						name='lastname'
+						onChangeText={text => this.setState({ lastname: text })}></TextInput>
+
+					<TextInput
+						style={styles.textinput}
+						placeholder='password'
+						secureTextEntry={true}
+						onChangeText={text => this.setState({ password: text })}></TextInput>
+					{/* <Button title='LOGIN' onPress={() => this._checkLogin()}></Button> */}
+					<Button title='Register' onPress={() => this.handleSubmitRegister()}></Button>
+					<Button title='Go to login' onPress={() => this._goRegister('0')}></Button>
 				</View>
 			);
+		}
+		return (
+			<View>
+				<Text>Bravo</Text>
+			</View>
+		);
 	}
 }
 

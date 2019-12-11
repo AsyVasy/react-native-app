@@ -26,7 +26,7 @@ class LoginPage extends React.Component {
 	handleChange(e) {
 		const { name, value } = e.target;
 		this.setState({ [name]: value });
-		console.log(name, value);
+		// console.log(name, value);
 	}
 
 	async handleSubmit(e) {
@@ -41,7 +41,7 @@ class LoginPage extends React.Component {
 				this.setState({ user: result });
 			})
 			.catch(err => {
-				console.log();
+				// console.log();
 			});
 	}
 
@@ -59,7 +59,7 @@ class LoginPage extends React.Component {
 		let value = await AsyncStorage.getItem('user');
 		let toto = JSON.parse(value);
 		if (value !== null) {
-			console.log(value);
+			// console.log(value);
 			this.setState({ toProfile: '1' });
 			this.setState({ user: toto });
 		}

@@ -38,18 +38,24 @@ class ProfilePage extends React.Component {
 	}
 
 	render() {
-		const user = this.props.user;
+		const user = this.props.user.user;
 
-		return (
-			<View>
-				<Text>HOME PAGE</Text>
-				<Text>Bienvenue {user.username} !!</Text>
+		console.log(user);
+		if (user) {
+			return (
+				<View>
+					<Text>Username: {user.username}</Text>
+					<Text>firstname: {user.firstname}</Text>
+					<Text>lastname: {user.lastname}</Text>
+					<Text>created_at: {user.created_at}</Text>
+					<Text>id: {user.id}</Text>
 
-				<Button title='Logout' onPress={this.logout}>
-					loggout
-				</Button>
-			</View>
-		);
+					<Button title='Logout' onPress={this.logout}>
+						loggout
+					</Button>
+				</View>
+			);
+		} else return <Text>bahbravo</Text>;
 	}
 }
 
