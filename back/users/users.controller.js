@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 const auth = require('./auth');
 
 // routes
-router.post('/authenticate', authenticate);
-router.post('/authenticateBis', authenticateBis);
+// router.post('/authenticate', authenticate);
+router.post('/authenticate', authenticateBis);
 router.post('/createUser', createUser);
 router.post('/register', register);
 
@@ -26,24 +26,30 @@ router.delete('/id/:id', deleteUser);
 router.post('/registerBis', registerBis);
 module.exports = router;
 
-function registerBis(req, res) {
+async function registerBis(req, res) {
 	// console.log(req.body);
-	const { username, lastname, password, firstname } = req.body;
-	const newUser = { username, lastname, firstname };
+	const { username, email, password } = req.body;
+	const newUser = { username, email };
 
-	bcrypt
-		.hash(password, 10)
-		.then(hash => {
-			newUser.password = hash;
-			userService.create(function(err, result) {
-				console.log(result);
-				if (err) return res.status(520).send(err);
-				return res.status(201).send(result);
-			}, newUser);
-		})
-		.catch(err => {
-			return res.status(500).send(err);
-		});
+	const check = await userService.checkByUsername(newUser.username);
+	if (check.length > 0) {
+		res.send('this user already exists');
+	} else {
+		bcrypt
+			.hash(password, 10)
+			.then(hash => {
+				newUser.password = hash;
+				userService.create(function(err, result) {
+					// console.log(result);
+					console.log('REGISTERBIS');
+					if (err) return res.status(520).send(err);
+					return res.status(201).send(result);
+				}, newUser);
+			})
+			.catch(err => {
+				return res.status(500).send(err);
+			});
+	}
 }
 
 function authenticateBis(req, res) {

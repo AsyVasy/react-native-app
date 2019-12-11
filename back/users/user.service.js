@@ -17,12 +17,12 @@ module.exports = {
 };
 
 function create(clbk, data) {
-	console.log(data);
-	const q = 'INSERT INTO `users`(`username`, `password`, `lastname`, `firstname`) VALUES (?,?, ?, ?)';
-	const payload = [data.username, data.password, data.lastname, data.firstname];
+	console.log('lalala ', data);
+	const q = 'INSERT INTO `users`(`username`, `password`, `email`) VALUES (?,?,?)';
+	const payload = [data.username, data.password, data.email];
 
 	db.query(q, payload, (err, res, cols) => {
-		console.log(this.sql); // affiche la dernière requête SQL, pratique pour deboguer
+		// console.log('sql => ', q); // affiche la dernière requête SQL, pratique pour deboguer
 		if (err) return clbk(err, null);
 		return clbk(null, res);
 	});
@@ -97,7 +97,7 @@ async function register(data) {
 	if (check.length) {
 		console.log('cet user existe deja ');
 	} else {
-		createUser(data);
+		create(data);
 	}
 }
 
